@@ -1,16 +1,15 @@
-package com.example.mviexample
+package com.example.mviexample.domain
 
+import com.example.mviexample.UserResult
 import com.example.mviexample.data.UserRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class LoadUsersInteractor @Inject constructor(
+class LoadUsersInteractorImpl @Inject constructor(
     private val repository: UserRepository
-) {
-
-    operator fun invoke(): Flow<UserResult> = flow {
-
+) : LoadUsersInteractor {
+    override suspend fun getUsers(): Flow<UserResult> = flow {
         emit(UserResult.Loading)
 
         try {

@@ -3,6 +3,7 @@ package com.example.mviexample
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mviexample.data.UserRepository
+import com.example.mviexample.domain.LoadUsersInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val repository: UserRepository
+    private val userInteractor: LoadUsersInteractor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UserState())
@@ -28,49 +29,22 @@ class UserViewModel @Inject constructor(
             UserIntent.LoadUsers -> loadUsers()
 
             UserIntent.Refresh -> loadUsers()
-
-            is UserIntent.UserClicked -> {
-                navigateToUser(intent.userId)
-            }
         }
     }
 
     private fun loadUsers() {
         viewModelScope.launch {
 
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    error = null
-                )
-            }
+            userInteractor.getUsers()
+                .collect { result ->
 
-            runCatching {
-                repository.getUsers()
-            }.onSuccess { users ->
-
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        users = users
-                    )
+                    _state.update { currentState ->
+                        reduce(
+                            currentState,
+                            result
+                        )
+                    }
                 }
-
-            }.onFailure { throwable ->
-
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = throwable.message
-                    )
-                }
-
-                _effects.send(
-                    UserEffect.ShowError(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
         }
     }
 
@@ -98,14 +72,6 @@ class UserViewModel @Inject constructor(
                     isLoading = false,
                     error = result.message
                 )
-        }
-    }
-
-    private fun navigateToUser(userId: Long) {
-        viewModelScope.launch {
-            _effects.send(
-                UserEffect.NavigateToDetails(userId)
-            )
         }
     }
 }

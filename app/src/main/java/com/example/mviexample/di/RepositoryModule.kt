@@ -1,4 +1,4 @@
-package com.example.mviexample.ui
+package com.example.mviexample.di
 
 import com.example.mviexample.data.UserRepository
 import com.example.mviexample.data.UserRepositoryImpl
