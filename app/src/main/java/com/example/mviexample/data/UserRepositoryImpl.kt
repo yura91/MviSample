@@ -1,8 +1,9 @@
 package com.example.mviexample.data
 
+import jakarta.inject.Inject
 import kotlinx.coroutines.delay
 
-class UserRepositoryImpl: UserRepository {
+class UserRepositoryImpl @Inject constructor(): UserRepository {
 
     override suspend fun getUsers(): List<User> {
         delay(1000)

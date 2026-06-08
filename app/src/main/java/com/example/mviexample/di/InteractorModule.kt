@@ -1,5 +1,6 @@
 package com.example.mviexample.di
 
+import com.example.mviexample.domain.LoadUsersInteractor
 import com.example.mviexample.domain.LoadUsersInteractorImpl
 import dagger.Binds
 import dagger.Module

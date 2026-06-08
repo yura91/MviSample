@@ -19,21 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mviexample.data.User
 import com.example.mviexample.ui.theme.MviExampleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             MviExampleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                UserScreen()
             }
         }
     }
@@ -56,12 +56,10 @@ fun GreetingPreview() {
 }
 
 @Composable
-fun UserScreen(
-    viewModel: UserViewModel = hiltViewModel(),
-    onNavigate: (Long) -> Unit
-) {
+fun UserScreen() {
+    val viewModel: UserViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.process(UserIntent.LoadUsers)
     }
@@ -69,13 +67,13 @@ fun UserScreen(
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
-                is UserEffect.NavigateToDetails ->
-                    onNavigate(effect.userId)
+                is UserEffect.NavigateToDetails -> {}
+
 
                 is UserEffect.ShowError ->
                     Toast
                         .makeText(
-                            LocalContext.current,
+                            context,
                             effect.message,
                             Toast.LENGTH_SHORT
                         )
@@ -99,11 +97,6 @@ fun UserScreen(
 
                     Text(
                         text = user.name,
-                        modifier = Modifier.clickable {
-                            viewModel.process(
-                                UserIntent.UserClicked(user.id)
-                            )
-                        }
                     )
                 }
             }
