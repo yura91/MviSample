@@ -92,12 +92,17 @@ fun UserScreen() {
         }
 
         else -> {
-            LazyColumn {
-                items(state.users) { user ->
+            Scaffold(
+                modifier = Modifier.fillMaxSize()
+            ) { paddingValues ->
 
-                    Text(
-                        text = user.name,
-                    )
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = paddingValues
+                ) {
+                    items(state.users) { user ->
+                        Text(user.name)
+                    }
                 }
             }
         }
