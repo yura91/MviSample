@@ -1,5 +1,6 @@
 package com.example.mviexample.data
 
+import com.example.mviexample.domain.UserRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.delay
 

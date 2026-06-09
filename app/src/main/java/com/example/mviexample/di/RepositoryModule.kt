@@ -1,7 +1,7 @@
 package com.example.mviexample.di
 
-import com.example.mviexample.data.UserRepository
 import com.example.mviexample.data.UserRepositoryImpl
+import com.example.mviexample.domain.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,7 +1,6 @@
 package com.example.mviexample.domain
 
 import com.example.mviexample.UserResult
-import com.example.mviexample.data.UserRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

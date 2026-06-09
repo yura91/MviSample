@@ -2,7 +2,6 @@ package com.example.mviexample
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mviexample.data.UserRepository
 import com.example.mviexample.domain.LoadUsersInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
